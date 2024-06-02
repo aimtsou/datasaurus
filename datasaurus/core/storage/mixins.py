@@ -86,6 +86,10 @@ class LocalStorageOperationsMixin(StorageOperationMixinBase):
         if not full_path.exists():
             raise ValueError(f"Trying to read from '{full_path}' but file does not exist")
 
-        _read_func = getattr(pl, f'read_{format.name}')
+        _read_func = getattr(pl, format.reader)
 
-        return _read_func(full_path)
+
+        if 'separator' not in kwargs:
+            kwargs['separator'] = format.separator
+
+        return _read_func(str(full_path), columns=columns, **kwargs)
