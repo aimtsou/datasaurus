@@ -33,6 +33,7 @@ class FileFormat(DataFormat, LowerIndexedEnum):
     PARQUET = auto()
     EXCEL = auto()
     AVRO = auto()
+    NDJSON = auto()
 
     @property
     def name(self) -> str:
