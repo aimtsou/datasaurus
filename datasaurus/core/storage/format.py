@@ -33,6 +33,12 @@ class FileFormat(DataFormat, LowerIndexedEnum):
     PARQUET = auto()
     EXCEL = auto()
     AVRO = auto()
+    TSV = auto()
+
+    separators = {
+        CSV: ',',
+        TSV: '\t',
+    }
 
     @property
     def name(self) -> str:
@@ -41,3 +47,21 @@ class FileFormat(DataFormat, LowerIndexedEnum):
     @property
     def suffix(self) -> str:
         return f'.{super().name.lower()}'
+
+    @property
+    def separator(self) -> str:
+        return self.separators.get(self, None)
+
+    @property
+    def reader(self) -> str:
+        return self.readers.get(self)
+
+    @staticmethod
+    def _create_readers():
+        polars_methods = set(dir(pl))
+        reader_methods = {fmt: f'read_{fmt.name}' for fmt in FileFormat if f'read_{fmt.name}' in polars_methods}
+        reader_methods[FileFormat.TSV] = 'read_csv'
+    
+        return reader_methods
+
+    readers = _create_readers()
