@@ -27,6 +27,7 @@ data pipelines, ETLs or data manipulation programs.
 - PARQUET ✅
 - EXCEL ✅
 - AVRO ✅
+- NDJSON ✅
 - TSV ⭕
 - SQL ⭕ (Like sql inserts)
 - 
